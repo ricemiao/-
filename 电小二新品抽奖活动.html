@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机抽锦鲤</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #FF8C00, #FF4500);
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .lottery-box {
+            font-size: 2rem;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px 40px;
+            border-radius: 10px;
+            min-width: 200px;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: white;
+            color: #FF4500;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #FFD700;
+        }
+        #name-form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>随机抽锦鲤</h1>
+    <div class="lottery-box" id="display">点击按钮开始抽奖</div>
+    <div class="buttons">
+        <button id="lottery-button" onclick="toggleLottery()">开始抽奖</button>
+    </div>
+    
+    <div id="name-form">
+        <p>输入您的微信昵称：</p>
+        <input type="text" id="nickname" placeholder="请输入微信昵称">
+        <button onclick="submitName()">提交</button>
+    </div>
+    
+    <script>
+        let names = [];
+        let interval;
+        let isRunning = false;
+        
+        function toggleLottery() {
+            if (isRunning) {
+                clearInterval(interval);
+                document.getElementById("lottery-button").innerText = "开始抽奖";
+            } else {
+                if (names.length === 0) {
+                    alert("请先输入微信昵称！");
+                    return;
+                }
+                interval = setInterval(() => {
+                    let randomIndex = Math.floor(Math.random() * names.length);
+                    document.getElementById("display").innerText = names[randomIndex];
+                }, 100);
+                document.getElementById("lottery-button").innerText = "停止抽奖";
+            }
+            isRunning = !isRunning;
+        }
+        
+        function submitName() {
+            let nameInput = document.getElementById("nickname").value.trim();
+            if (nameInput && !names.includes(nameInput)) {
+                names.push(nameInput);
+                alert("昵称已提交！");
+                document.getElementById("nickname").value = "";
+            } else {
+                alert("请输入有效的昵称或该昵称已存在！");
+            }
+        }
+    </script>
+</body>
+</html>
